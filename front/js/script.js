@@ -1,3 +1,6 @@
+const items = document.getElementById('items');
+
+
 /*récupérer les données*/
 fetch("http://localhost:3000/api/products")
   .then(function(res) {
@@ -6,25 +9,22 @@ fetch("http://localhost:3000/api/products")
     }
   })
   .then(function(products) {
-    console.log(products);
+    for(let i = 0; i < products.length; i ++){
+        items.innerHTML +=` 
+        <a href="./product.html?id=${products[i]._id}">
+        <article>
+          <img src="${products[i].imageUrl}" alt="${products[i].altTxt}">
+          <h3 class="productName">${products[i].name}</h3>
+          <p class="productDescription">${products[i].description}</p>
+        </article>
+        </a>
+      `; }
+
   })
   .catch(function(err) {
     // Une erreur est survenue
   });
 
 
-/*boucle pour chaque article des items*/
-function console(products){
-    for (product of products) {
-        const itemCard = document.getElementById('items'); 
-        itemCard.innerHTML +=` 
-        <a href="./product.html?id=${product._id}">
-        <article>
-          <img src="${product.imageUrl}" alt="${product.altTxt}">
-          <h3 class="productName">${product.name}</h3>
-          <p class="productDescription">${product.description}</p>
-        </article>
-        </a>
-      ';
-    }
-};
+
+
