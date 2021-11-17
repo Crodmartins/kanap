@@ -25,6 +25,7 @@ fetch("http://localhost:3000/api/products")
     // Une erreur est survenue
   });
 
+/*base URL*/
 
-
+/*l'URL inclut déjà l'ID du produit sélectionné */
 
