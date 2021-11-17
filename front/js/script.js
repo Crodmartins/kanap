@@ -26,6 +26,6 @@ fetch("http://localhost:3000/api/products")
   });
 
 /*base URL*/
-
+var str = 
 /*l'URL inclut déjà l'ID du produit sélectionné */
 
