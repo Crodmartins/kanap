@@ -26,6 +26,6 @@ fetch("http://localhost:3000/api/products")
   });
 
 /*base URL*/
-var str = 
+var str = "https://crodmartins.github.io/kanap/"
 /*l'URL inclut déjà l'ID du produit sélectionné */
 
