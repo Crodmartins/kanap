@@ -26,6 +26,11 @@ fetch("http://localhost:3000/api/products")
   });
 
 /*base URL*/
-var str = "https://crodmartins.github.io/kanap/"
+let searchParams = new URLSearchParams(window.location.search);
+
+if(searchParams.has('id'));
+  let kanapId = searchParams.get('id');
+  console.log(kanapId);
+
 /*l'URL inclut déjà l'ID du produit sélectionné */
 
