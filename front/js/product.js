@@ -1,10 +1,13 @@
 /*récupérer l'ID du canapé dans l'URL*/
 const str = window.location.href;
-var url = new URL(str);
-id = url.searchParams.get("id");            
+let url = new URL(str);
+let id = url.searchParams.get("id");            
 
 let UrlProduct = `http://localhost:3000/api/products/${id}`;   
 console.log(UrlProduct);
+
+let photo = document.querySelector('.item__img')    
+const baliseImg = document.createElement('img');
 
 /*recevoir les données*/
 fetch (UrlProduct)                                            
@@ -13,17 +16,13 @@ fetch (UrlProduct)
       return res.json();
   }
 })
-  .then(function(products) {
-  for(let product in product){
-
-
-  let photo = document.querySelector('.item__img')    
-  const baliseImg = document.createElement('img');
-  baliseImg.src = data.imageUrl;  // Recupere l'image dans l'api 
-  baliseImg.alt = data.altTxt; // récupère le alt 
-  photo.appendChild(baliseImg);   // Ajoute l'image dans le Html
-  
+  .then(function(product) {
+    photo.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`
+    
   })
   .catch(function(err) {
     // Une erreur est survenue
   });
+
+  /*lister éléments hmtl - console.log pour vérifier à chaque élément
+  
