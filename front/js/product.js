@@ -24,5 +24,4 @@ fetch (UrlProduct)
     // Une erreur est survenue
   });
 
-  /*lister éléments hmtl - console.log pour vérifier à chaque élément
-  
+  /*lister éléments hmtl - console.log pour vérifier à chaque élément*/

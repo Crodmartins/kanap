@@ -9,7 +9,7 @@ fetch("http://localhost:3000/api/products")
     }
   })
   .then(function(products) {
-    for(let i = _id; i < products.length; i ++){
+    for(let i = 0; i < products.length; i ++){
         items.innerHTML +=` 
         <a href="./product.html?id=${products[i]._id}">
         <article>
@@ -24,5 +24,4 @@ fetch("http://localhost:3000/api/products")
   .catch(function(err) {
     // Une erreur est survenue
   });
-
 
