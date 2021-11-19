@@ -6,10 +6,12 @@ let id = url.searchParams.get("id");
 let UrlProduct = `http://localhost:3000/api/products/${id}`;   
 console.log(UrlProduct);
 
+/*identifier les éléments à modifier*/
 let photo = document.querySelector('.item__img')    
 let title = document.getElementById('title');
 let price = document.getElementById('price');
 let description = document.getElementById('description');
+let colors = document.getElementById('colors');
 
 /*recevoir les données*/
 fetch (UrlProduct)                                            
@@ -23,9 +25,11 @@ fetch (UrlProduct)
     title.innerHTML = `<h1 id="title">${product.name}</h1>`
     price.innerHTML = `<span id="price">${product.price}</span>€</p>`
     description.innerHTML = `<p id="description">${product.description}</p>`
+    for (let i = 0; i < product.colors.length; i++) {
+      colors.innerHTML += 
+      `<option value="${product.colors[i]}">${product.colors[i]}</option>`;
+    }
   })
   .catch(function(err) {
     // Une erreur est survenue
   });
-
-  /*lister éléments hmtl - console.log pour vérifier à chaque élément*/
