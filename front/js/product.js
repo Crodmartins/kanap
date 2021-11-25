@@ -1,4 +1,4 @@
-/*récupérer l'ID du canapé dans l'URL*/
+//récupérer l'ID du canapé dans l'URL
 const str = window.location.href;
 let url = new URL(str);
 let id = url.searchParams.get("id");            
@@ -6,14 +6,14 @@ let id = url.searchParams.get("id");
 let UrlProduct = `http://localhost:3000/api/products/${id}`;   
 console.log(UrlProduct);
 
-/*identifier les éléments à modifier*/
-let photo = document.querySelector('.item__img')    
+//identifier les éléments à modifier
+let image = document.querySelector('.item__img')    
 let title = document.getElementById('title');
 let price = document.getElementById('price');
 let description = document.getElementById('description');
 let colors = document.getElementById('colors');
 
-/*recevoir les données*/
+//recevoir les données
 fetch (UrlProduct)                                            
   .then(function(res) {
     if (res.ok) {
@@ -21,7 +21,7 @@ fetch (UrlProduct)
   }
 })
   .then(function(product) {
-    photo.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`
+    image.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`
     title.innerHTML = `<h1 id="title">${product.name}</h1>`
     price.innerHTML = `<span id="price">${product.price}</span>€</p>`
     description.innerHTML = `<p id="description">${product.description}</p>`
@@ -33,3 +33,65 @@ fetch (UrlProduct)
   .catch(function(err) {
     // Une erreur est survenue
   });
+
+
+//Affichage du Panier en fonction du choix
+
+let selectQuantity = document.getElementById('quantity');
+let selectColors = document.getElementById('colors');
+
+// utilisation eventListener quand un client clique sur ajouter 
+let addToCart = document.getElementById('addToCart');
+
+addToCart.addEventListener('click', (event) => {
+  event.preventDefault();
+
+  let selectionProduct = {
+    id: id,
+    image: image.innerHTML,
+    name: title.innerHTML,
+    price: price.innerHTML,
+    color: selectColors.value,
+    quantity: selectQuantity.value,
+  };
+
+  // création localstorage - language JSON en JS 
+  let productInLocalStorage =  JSON.parse(localStorage.getItem('product'));
+
+  // ajout des produits dans localstorage
+  let addProductLocalStorage = () => {
+
+//stockage des données dans le localstorate
+  productInLocalStorage.push(selectionProduct);
+  // language JS en JSON  :
+  localStorage.setItem('product', JSON.stringify(productInLocalStorage));
+  }
+
+  let addConfirm = () => {
+    alert('Le produit a bien été ajouté au panier');
+  }
+
+  let update = false;
+
+  // si produits déjà dans le localstorage, même couleur = augmentation de la quantité
+  if (productInLocalStorage) {
+
+   productInLocalStorage.forEach (function (productOk, key) {
+
+    if (productOk.id == id && productOk.color == selectColors.value) {
+      productInLocalStorage[key].quantity = parseInt(productOk.quantity) + parseInt(selectQuantity.value);
+      localStorage.setItem('product', JSON.stringify(productInLocalStorage));
+      update = true;
+    
+      
+    if (!update) {
+        addProductLocalStorage();
+    } 
+
+    } else { // création d'un array si aucun produit ajouté au panier */ 
+      productInLocalStorage = [];
+      addProductLocalStorage();
+      }
+    })
+  }
+});
