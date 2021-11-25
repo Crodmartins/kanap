@@ -12,6 +12,7 @@ let title = document.getElementById('title');
 let price = document.getElementById('price');
 let description = document.getElementById('description');
 let colors = document.getElementById('colors');
+let imageAlt = "";
 
 //recevoir les données
 fetch (UrlProduct)                                            
@@ -35,12 +36,12 @@ fetch (UrlProduct)
   });
 
 
-//Affichage du Panier en fonction du choix
+//Affichage du Panier en fonction du choix // 
 
 let selectQuantity = document.getElementById('quantity');
 let selectColors = document.getElementById('colors');
 
-// utilisation eventListener quand un client clique sur ajouter 
+// utilisation eventListener quand un client clique sur ajouter //
 let addToCart = document.getElementById('addToCart');
 
 addToCart.addEventListener('click', (event) => {
@@ -50,30 +51,27 @@ addToCart.addEventListener('click', (event) => {
     id: id,
     image: image.innerHTML,
     name: title.innerHTML,
+    alt : image.altTxt,
     price: price.innerHTML,
     color: selectColors.value,
     quantity: selectQuantity.value,
   };
 
-  // création localstorage - language JSON en JS 
+  // création localstorage - language JSON en JS //
   let productInLocalStorage =  JSON.parse(localStorage.getItem('product'));
 
-  // ajout des produits dans localstorage
+  // ajout des produits dans localstorage // 
   let addProductLocalStorage = () => {
 
-//stockage des données dans le localstorate
+//stockage des données dans le localstorage//
   productInLocalStorage.push(selectionProduct);
-  // language JS en JSON  :
+  // language JS en JSON //
   localStorage.setItem('product', JSON.stringify(productInLocalStorage));
-  }
-
-  let addConfirm = () => {
-    alert('Le produit a bien été ajouté au panier');
   }
 
   let update = false;
 
-  // si produits déjà dans le localstorage, même couleur = augmentation de la quantité
+  // si produits déjà dans le localstorage, même couleur = augmentation de la quantité//
   if (productInLocalStorage) {
 
    productInLocalStorage.forEach (function (productOk, key) {
@@ -88,7 +86,7 @@ addToCart.addEventListener('click', (event) => {
         addProductLocalStorage();
     } 
 
-    } else { // création d'un array si aucun produit ajouté au panier */ 
+    } else { // création d'un array si aucun produit ajouté au panier //
       productInLocalStorage = [];
       addProductLocalStorage();
       }
