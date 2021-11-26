@@ -12,7 +12,7 @@ let title = document.getElementById('title');
 let price = document.getElementById('price');
 let description = document.getElementById('description');
 let colors = document.getElementById('colors');
-let imageAlt = "";
+
 
 //recevoir les données
 fetch (UrlProduct)                                            
@@ -33,63 +33,42 @@ fetch (UrlProduct)
   })
   .catch(function(err) {
     // Une erreur est survenue
-  });
+  })
 
-
-//Affichage du Panier en fonction du choix // 
-
+//déclarer la quantité et les couleurs
 let selectQuantity = document.getElementById('quantity');
 let selectColors = document.getElementById('colors');
 
-// utilisation eventListener quand un client clique sur ajouter //
+//déclares les informations du produits à récupérer
+let product = id ;
+
+let selectionProduct = {
+  id: id,
+  image: product.imageUrl,
+  name: product.title,  
+  price: product.price,
+  color: selectColors.value,
+  quantity: selectQuantity.value,
+};
+
+//indiquer où et quoi mettre dans le panier
 let addToCart = document.getElementById('addToCart');
+let cart =[selectionProduct];
 
+//suite à l'évènement clic sur le bouton panier
 addToCart.addEventListener('click', (event) => {
-  event.preventDefault();
+let cart =  JSON.parse(localStorage.getItem('cart'));
 
-  let selectionProduct = {
-    id: id,
-    image: image.innerHTML,
-    name: title.innerHTML,
-    alt : image.altTxt,
-    price: price.innerHTML,
-    color: selectColors.value,
-    quantity: selectQuantity.value,
-  };
-
-  // création localstorage - language JSON en JS //
-  let productInLocalStorage =  JSON.parse(localStorage.getItem('product'));
-
-  // ajout des produits dans localstorage // 
-  let addProductLocalStorage = () => {
-
-//stockage des données dans le localstorage//
-  productInLocalStorage.push(selectionProduct);
-  // language JS en JSON //
-  localStorage.setItem('product', JSON.stringify(productInLocalStorage));
+//il faut une couleur et une quantité minimum pour ajouter au panier 
+if (selectQuantity.value > 0 && selectQuantity.value <=100 && selectQuantity.value != 0){
   }
-
-  let update = false;
-
-  // si produits déjà dans le localstorage, même couleur = augmentation de la quantité//
-  if (productInLocalStorage) {
-
-   productInLocalStorage.forEach (function (productOk, key) {
-
-    if (productOk.id == id && productOk.color == selectColors.value) {
-      productInLocalStorage[key].quantity = parseInt(productOk.quantity) + parseInt(selectQuantity.value);
-      localStorage.setItem('product', JSON.stringify(productInLocalStorage));
-      update = true;
-    
-      
-    if (!update) {
-        addProductLocalStorage();
-    } 
-
-    } else { // création d'un array si aucun produit ajouté au panier //
-      productInLocalStorage = [];
-      addProductLocalStorage();
-      }
-    })
+//si panier vide, ajouter une nouvelle ligne de produit)
+if (cart == null){
+    localStorage.setItem('cart',JSON.stringify(selectionProduct));
+}
+//si produit avec même id et couleur déjà dans le panier, incrémenter la quantité
+if (product.id == id && product.color == selectColors.value){
+    productInLocalStorage[key].quantity = parseInt(productOk.quantity) + parseInt(selectQuantity.value);
+    localStorage.setItem('cart', JSON.stringify(productInLocalStorage));
   }
-});
+})
