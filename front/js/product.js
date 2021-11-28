@@ -1,3 +1,5 @@
+/* Récupération des données et affichage du produit*/
+
 //récupérer l'ID du canapé dans l'URL
 const str = window.location.href;
 let url = new URL(str);
@@ -13,9 +15,8 @@ let price = document.getElementById('price');
 let description = document.getElementById('description');
 let colors = document.getElementById('colors');
 
-
 //recevoir les données
-fetch (UrlProduct)                                            
+const getProduct = fetch (UrlProduct)                                            
   .then(function(res) {
     if (res.ok) {
       return res.json();
@@ -35,40 +36,37 @@ fetch (UrlProduct)
     // Une erreur est survenue
   })
 
-//déclarer la quantité et les couleurs
-let selectQuantity = document.getElementById('quantity');
-let selectColors = document.getElementById('colors');
 
-//déclares les informations du produits à récupérer
-let product = id ;
+/**Ajout du produit dans le panier */  
 
-let selectionProduct = {
-  id: id,
-  image: product.imageUrl,
-  name: product.title,  
-  price: product.price,
-  color: selectColors.value,
-  quantity: selectQuantity.value,
-};
+//déclarer les valeurs nécessaires
+let selectQuantity = document.getElementById('quantity'); //quantité du produit sélectionné
+let selectColors = document.getElementById('colors'); //couleur sélectionnée par l'utilisateur
+let addToCart = document.getElementById('addToCart');//bouton qui va ajouter dans le panier
+let cart = localStorage.getItem('cart');//du contenu du produit
 
-//indiquer où et quoi mettre dans le panier
-let addToCart = document.getElementById('addToCart');
-let cart =[selectionProduct];
-
-//suite à l'évènement clic sur le bouton panier
-addToCart.addEventListener('click', (event) => {
-let cart =  JSON.parse(localStorage.getItem('cart'));
-
-//il faut une couleur et une quantité minimum pour ajouter au panier 
-if (selectQuantity.value > 0 && selectQuantity.value <=100 && selectQuantity.value != 0){
-  }
-//si panier vide, ajouter une nouvelle ligne de produit)
-if (cart == null){
-    localStorage.setItem('cart',JSON.stringify(selectionProduct));
-}
-//si produit avec même id et couleur déjà dans le panier, incrémenter la quantité
-if (product.id == id && product.color == selectColors.value){
-    productInLocalStorage[key].quantity = parseInt(productOk.quantity) + parseInt(selectQuantity.value);
-    localStorage.setItem('cart', JSON.stringify(productInLocalStorage));
-  }
-})
+getProduct.then((product) => { //récupération des infos du produit
+  let selectionProduct = {
+    id: product._id,
+    image: product.imageUrl,
+    name: product.title,  
+    price: parseInt(product.price),//transformer une string en nombre
+    color: selectColors.value,
+    quantity: parseInt(selectQuantity.value),
+  };
+  
+  addToCart.addEventListener('click', (event) => { //produit existant, clic sur le bouton 
+    if (cart == null){ //si panier n'est pas vide
+    let productInLocalStorage = JSON.parse(localStorage.getItem('cart')); //je récupère les données
+      if (selectQuantity.value > 0 && selectQuantity.value <=100 && selectQuantity.value != 0){//si la quantité est >0 et <100
+        localStorage.setItem('cart', JSON.stringify(addToCart));//je stocke la donnée
+      }
+      if (product.id == id && product.color == selectColors.value){//si l'ID et la couleur d'un produit sont identiquées
+        productInLocalStorage[key].quantity = parseInt(productOk.quantity) + parseInt(selectQuantity.value);//incrémenter la quantité
+        localStorage.setItem('cart', JSON.stringify(productInLocalStorage));//je stocke la donnée
+      }
+    } else {
+      localStorage.setItem('cart',JSON.stringify([selectionProduct]));//je stocke la donnée d'un nouveau produit
+    }
+  })
+});
