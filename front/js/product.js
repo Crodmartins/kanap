@@ -57,7 +57,7 @@ getProduct.then((product) => { //récupération des infos du produit
   
   addToCart.addEventListener('click', (event) => { //produit existant, clic sur le bouton 
     if (cart == null){ //si panier n'est pas vide
-    let productInLocalStorage = JSON.parse(localStorage.getItem('cart')); //je récupère les données
+    JSON.parse(localStorage.getItem('cart')); //je récupère les données pour les lire
       if (selectQuantity.value > 0 && selectQuantity.value <=100 && selectQuantity.value != 0){//si la quantité est >0 et <100
         localStorage.setItem('cart', JSON.stringify(addToCart));//je stocke la donnée
       }
