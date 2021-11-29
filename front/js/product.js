@@ -31,6 +31,7 @@ const getProduct = fetch (UrlProduct)
       colors.innerHTML += 
       `<option value="${product.colors[i]}">${product.colors[i]}</option>`;
     }
+    return product;
   })
   .catch(function(err) {
     // Une erreur est survenue
@@ -45,28 +46,35 @@ let selectColors = document.getElementById('colors'); //couleur sélectionnée p
 let addToCart = document.getElementById('addToCart');//bouton qui va ajouter dans le panier
 let cart = localStorage.getItem('cart');//du contenu du produit
 
-getProduct.then((product) => { //récupération des infos du produit
-  let selectionProduct = {
-    id: product._id,
-    image: product.imageUrl,
-    name: product.title,  
-    price: parseInt(product.price),//transformer une string en nombre
-    color: selectColors.value,
-    quantity: parseInt(selectQuantity.value),
-  };
+
+getProduct.then((product) => {
+let selectionProduct = {//récupération des infos du produit
+  id: product._id,
+  image: product.imageUrl,
+  name: product.title,  
+  price: parseInt(product.price),//transformer une string en nombre
+  color: selectColors.value,
+  quantity: parseInt(selectQuantity.value),
+};
+console.log(product);//vérifier qu'on a bien récupéré les données
   
   addToCart.addEventListener('click', (event) => { //produit existant, clic sur le bouton 
-    if (cart == null){ //si panier n'est pas vide
-    JSON.parse(localStorage.getItem('cart')); //je récupère les données pour les lire
+    if (cart != null){ //si panier n'est pas vide
+      JSON.parse(localStorage.getItem("cart"));//je récupère les données pour les lire
       if (selectQuantity.value > 0 && selectQuantity.value <=100 && selectQuantity.value != 0){//si la quantité est >0 et <100
-        localStorage.setItem('cart', JSON.stringify(addToCart));//je stocke la donnée
+        localStorage.setItem("cart", JSON.stringify(selectionProduct));//je stocke la donnée
       }
       if (product.id == id && product.color == selectColors.value){//si l'ID et la couleur d'un produit sont identiquées
-        productInLocalStorage[key].quantity = parseInt(productOk.quantity) + parseInt(selectQuantity.value);//incrémenter la quantité
-        localStorage.setItem('cart', JSON.stringify(productInLocalStorage));//je stocke la donnée
+        selectionProduct.quantity = product.id.quantity + selectQuantity.value;//incrémenter la quantité
+        localStorage.setItem("cart", JSON.stringify(selectionProduct));//je stocke la donnée
       }
     } else {
-      localStorage.setItem('cart',JSON.stringify([selectionProduct]));//je stocke la donnée d'un nouveau produit
+      localStorage.setItem("cart",JSON.stringify([selectionProduct]));//je stocke la donnée d'un nouveau produit
     }
   })
 });
+
+console.log(cart);
+//SelectionProduct = undefined 
+//le tableau ne se crée pas 
+//la qté et la couleur ne sont pas récupérées
