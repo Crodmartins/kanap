@@ -48,33 +48,41 @@ let cart = localStorage.getItem('cart');//du contenu du produit
 
 
 getProduct.then((product) => {
-let selectionProduct = {//récupération des infos du produit
-  id: product._id,
-  image: product.imageUrl,
-  name: product.title,  
-  price: parseInt(product.price),//transformer une string en nombre
-  color: selectColors.value,
-  quantity: parseInt(selectQuantity.value),
-};
-console.log(product);//vérifier qu'on a bien récupéré les données
-  
-  addToCart.addEventListener('click', (event) => { //produit existant, clic sur le bouton 
-    if (cart != null){ //si panier n'est pas vide
-      JSON.parse(localStorage.getItem("cart"));//je récupère les données pour les lire
-      if (selectQuantity.value > 0 && selectQuantity.value <=100 && selectQuantity.value != 0){//si la quantité est >0 et <100
-        localStorage.setItem("cart", JSON.stringify(selectionProduct));//je stocke la donnée
-      }
-      if (product.id == id && product.color == selectColors.value){//si l'ID et la couleur d'un produit sont identiquées
-        selectionProduct.quantity = product.id.quantity + selectQuantity.value;//incrémenter la quantité
-        localStorage.setItem("cart", JSON.stringify(selectionProduct));//je stocke la donnée
-      }
+  let selectionProduct = {//récupération des infos du produit
+    id: product._id,
+    image: product.imageUrl,
+    name: product.name,  
+    price: parseInt(product.price),//transformer une string en nombre
+  };
+  console.log(selectColors.value);//vérifier qu'on a bien récupéré les données
+    
+    addToCart.addEventListener('click', (event) => { //produit existant, clic sur le bouton 
+      selectionProduct.color = selectColors.value;
+      selectionProduct.quantity = parseInt(selectQuantity.value);
+    
+      console.log(selectionProduct);
+      
+      cart = JSON.parse(localStorage.getItem("cart"));//je récupère les données pour les lire
+      
+      if (cart != null){ //si panier n'est pas vide
+        
+        console.log(cart[0].color);
+        for (let i = 0; i < cart.length; i++) {
+          if (selectionProduct.id == cart[i].id && selectionProduct.color == cart[i].color){
+            //que le produit qui est dans mon panier, sa quantité est = sa quantité + quantité du produit sélectionné 
+            cart[i].quantity += selectionProduct.quantity;
+          }
+        }
+        
+        /*if (selectionProduct.id == id && product.color == selectColors.value){//si l'ID et la couleur d'un produit sont identiquées
+          selectionProduct.quantity = product.id.quantity + selectQuantity.value;//incrémenter la quantité
+          localStorage.setItem("cart", JSON.stringify(selectionProduct));//je stocke la donnée
+        }*/
     } else {
       localStorage.setItem("cart",JSON.stringify([selectionProduct]));//je stocke la donnée d'un nouveau produit
-    }
-  })
-});
+      }
+    })
+  });
 
-console.log(cart);
-//SelectionProduct = undefined 
-//le tableau ne se crée pas 
-//la qté et la couleur ne sont pas récupérées
+//La condition ne fonctionne pas 
+//le tableau ne s'incrémente pas avec nouveau produit 
