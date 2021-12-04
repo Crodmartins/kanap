@@ -67,6 +67,7 @@ getProduct.then((product) => {
       if (cart != null){ //si panier n'est pas vide
         
         console.log(cart[0].color);
+
         for (let i = 0; i < cart.length; i++) {
           if (selectionProduct.id == cart[i].id && selectionProduct.color == cart[i].color){
             //que le produit qui est dans mon panier, sa quantité est = sa quantité + quantité du produit sélectionné 
@@ -79,10 +80,8 @@ getProduct.then((product) => {
           localStorage.setItem("cart", JSON.stringify(selectionProduct));//je stocke la donnée
         }*/
     } else {
+      cart.push(selectionProduct);
       localStorage.setItem("cart",JSON.stringify([selectionProduct]));//je stocke la donnée d'un nouveau produit
       }
     })
   });
-
-//La condition ne fonctionne pas 
-//le tableau ne s'incrémente pas avec nouveau produit 
