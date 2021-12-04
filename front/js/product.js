@@ -62,8 +62,8 @@ getProduct.then((product) => {
     
       console.log(selectionProduct);
       
-      cart = JSON.parse(localStorage.getItem("cart"));//je récupère les données pour les lire
-      
+      cart = JSON.parse(localStorage.getItem('cart'));//je récupère les données pour les lire
+
       if (cart != null){ //si panier n'est pas vide
         
         console.log(cart[0].color);
@@ -72,16 +72,17 @@ getProduct.then((product) => {
           if (selectionProduct.id == cart[i].id && selectionProduct.color == cart[i].color){
             //que le produit qui est dans mon panier, sa quantité est = sa quantité + quantité du produit sélectionné 
             cart[i].quantity += selectionProduct.quantity;
+            localStorage.setItem('cart', JSON.stringify(selectionProduct));
+          } else {
+           cart.push(selectionProduct);
           }
+        localStorage.setItem('cart',JSON.stringify(selectionProduct));
         }
-        
-        /*if (selectionProduct.id == id && product.color == selectColors.value){//si l'ID et la couleur d'un produit sont identiquées
-          selectionProduct.quantity = product.id.quantity + selectQuantity.value;//incrémenter la quantité
-          localStorage.setItem("cart", JSON.stringify(selectionProduct));//je stocke la donnée
-        }*/
+
     } else {
+      cart = [];
       cart.push(selectionProduct);
-      localStorage.setItem("cart",JSON.stringify([selectionProduct]));//je stocke la donnée d'un nouveau produit
+      localStorage.setItem('cart',JSON.stringify([selectionProduct]));//je stocke la donnée d'un nouveau produit
       }
     })
   });
