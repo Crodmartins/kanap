@@ -62,27 +62,27 @@ getProduct.then((product) => {
     
       console.log(selectionProduct);
       
-      cart = JSON.parse(localStorage.getItem('cart'));//je récupère les données pour les lire
-
-      if (cart != null){ //si panier n'est pas vide
+      let productsInLocalStorage = JSON.parse(localStorage.getItem('cart'));
+      
+        if (productsInLocalStorage != null) { //si panier n'est pas vide 
         
-        console.log(cart[0].color);
-
-        for (let i = 0; i < cart.length; i++) {
-          if (selectionProduct.id == cart[i].id && selectionProduct.color == cart[i].color){
-            //que le produit qui est dans mon panier, sa quantité est = sa quantité + quantité du produit sélectionné 
-            cart[i].quantity += selectionProduct.quantity;
-            localStorage.setItem('cart', JSON.stringify(selectionProduct));
+        for (let i = 0; i < productsInLocalStorage.length; i++) {//je parcours le panier pour voir le contenu
+          console.log(productsInLocalStorage[i].color);
+          if (selectionProduct.id == productsInLocalStorage[i].id && selectionProduct.color == productsInLocalStorage[i].color){
+            //si le produit qui est dans mon panier, sa quantité est = sa quantité + quantité du produit sélectionné 
+            productsInLocalStorage[i].quantity += selectionProduct.quantity;//alors j'incrémente la quantité
+            localStorage.setItem('cart', JSON.stringify(productsInLocalStorage));//je mets à jour le local storage
+            console.table(productsInLocalStorage);
           } else {
-           cart.push(selectionProduct);
-          }
-        localStorage.setItem('cart',JSON.stringify(selectionProduct));
+            productsInLocalStorage.push(selectionProduct);//si le panier n'est pas vide, j'ajoute le produit à la liste
+            localStorage.setItem('cart', JSON.stringify(productsInLocalStorage));//je mets à jour le local storage
+          }}
+      //si le panier est vide 
+        } else {
+          productsInLocalStorage = [];//je crée le tableau
+          productsInLocalStorage.push(selectionProduct);// j'ajoute le produit
+          localStorage.setItem('cart', JSON.stringify(productsInLocalStorage));//je mets à jour le local storage
+          console.table(productsInLocalStorage); 
         }
-
-    } else {
-      cart = [];
-      cart.push(selectionProduct);
-      localStorage.setItem('cart',JSON.stringify([selectionProduct]));//je stocke la donnée d'un nouveau produit
-      }
-    })
-  });
+    });
+  })
