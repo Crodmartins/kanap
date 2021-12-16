@@ -29,3 +29,18 @@ for (i = 0; i < productsInLocalStorage.length; i++) {
                 </div>
               </article>`;
 }
+
+/*WIP
+//modification de la quantité 
+let itemQty = document.getElementsByClassName('itemQuantity');
+
+itemQty[i].addEventListener('change',(event)=> {
+
+for (i = 0; i < productsInLocalStorage.length; i++) {//je parcours le tableau 
+  if (productsInLocalStorage[i].id === id && productsInLocalStorage[i].color)
+    localStorage.setItem('cart', JSON.stringify(products));//je mets à jour le local storage
+  })
+}
+
+
+//suppression d'un produit
