@@ -6,7 +6,6 @@ let url = new URL(str);
 let id = url.searchParams.get("id");            
 
 let UrlProduct = `http://localhost:3000/api/products/${id}`;   
-console.log(UrlProduct);
 
 //identifier les éléments à modifier
 let image = document.querySelector('.item__img')    
@@ -44,37 +43,39 @@ const getProduct = fetch (UrlProduct)
 let selectQuantity = document.getElementById('quantity'); //quantité du produit sélectionné
 let selectColors = document.getElementById('colors'); //couleur sélectionnée par l'utilisateur
 let addToCart = document.getElementById('addToCart');//bouton qui va ajouter dans le panier
-let cart = localStorage.getItem("cart");//du contenu du produit
-let productsInCart = JSON.parse(localStorage.getItem('cart'));
+
+
 let products = [];//je crée le tableau
 
 getProduct.then((product) => {
+
   let selectionProduct = {//récupération des infos du produit
     id: product._id,
     image: product.imageUrl,
     name: product.name,  
     price: parseInt(product.price),//transformer une string en nombre
   };
-  console.log(selectColors.value);//vérifier qu'on a bien récupéré les données
-    
+
+      
     addToCart.addEventListener('click', (event) => { //produit existant, clic sur le bouton 
+      let cart = localStorage.getItem("cart");//du contenu du produit =caddie
       selectionProduct.color = selectColors.value;
       selectionProduct.quantity = parseInt(selectQuantity.value);
-    
-      console.log(selectionProduct);
-            
-        if (productsInCart != null) { //si panier n'est pas vide 
-        
-        for (let i = 0; i < products.length; i++) {//je parcours le panier pour voir le contenu
-          console.log(products[i].color);
-          if (selectionProduct.id == products[i].id && selectColors.value == products[i].color){//si j'ajoute un produit avec le même id et couleur
+      console.log(cart);
+                  
+        if (cart != null) { //si caddie n'est pas vide 
+          let productsInCart = JSON.parse(localStorage.getItem('cart')); //=sac
+
+        for (let i = 0; i < productsInCart.length; i++) {//je parcours le panier pour voir le contenu
+  
+          if (selectionProduct.id == productsInCart[i].id && selectColors.value == productsInCart[i].color){//si j'ajoute un produit avec le même id et couleur
             //alors sa quantité  = sa quantité actuelle + quantité du produit sélectionné 
-            products[i].quantity = products[i].quantity + selectionProduct.quantity;
-            localStorage.setItem('cart', JSON.stringify(products));//je mets à jour le local storage
-            console.table(products);
+            productsInCart[i].quantity += selectionProduct.quantity;
+            localStorage.setItem('cart', JSON.stringify(productsInCart));//je mets à jour le local storage
+            console.table(productsInCart);
           } else {
-            products.push(selectionProduct);//si le panier n'est pas vide, j'ajoute le produit à la liste
-            localStorage.setItem('cart', JSON.stringify(products));//je mets à jour le local storage
+            productsInCart.push(selectionProduct);//si le panier n'est pas vide, j'ajoute le produit à la liste
+            localStorage.setItem('cart', JSON.stringify(productsInCart));//je mets à jour le local storage*/
           }}
       //si le panier est vide 
         } else {
@@ -86,4 +87,5 @@ getProduct.then((product) => {
   })
 
 /*la quantité ne s'incrémente pas 
-la nouvelle couleur ajoutée écrase la couleur du produit précédent*/
+la nouvelle couleur ajoutée écrase la couleur du produit précédent
+selection produit ne semble pas être lu ?*/
