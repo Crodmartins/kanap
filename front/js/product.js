@@ -44,7 +44,6 @@ let selectQuantity = document.getElementById('quantity'); //quantité du produit
 let selectColors = document.getElementById('colors'); //couleur sélectionnée par l'utilisateur
 let addToCart = document.getElementById('addToCart');//bouton qui va ajouter dans le panier
 
-
 let products = [];//je crée le tableau
 
 getProduct.then((product) => {
@@ -53,35 +52,35 @@ getProduct.then((product) => {
     id: product._id,
     image: product.imageUrl,
     name: product.name,  
-    price: parseInt(product.price),//transformer une string en nombre
   };
 
-      
-    addToCart.addEventListener('click', (event) => { //produit existant, clic sur le bouton 
+    addToCart.addEventListener('click', (event) => { //produit existant, clic sur le bouton Ajouter au panier
       let cart = localStorage.getItem("cart");//du contenu du produit =caddie
       selectionProduct.color = selectColors.value;
       selectionProduct.quantity = parseInt(selectQuantity.value);
-      console.log(cart);
-                  
+    
+      
         if (cart != null) { //si caddie n'est pas vide 
-          let productsInCart = JSON.parse(localStorage.getItem('cart')); //=sac
+          let productsInCart = JSON.parse(localStorage.getItem('cart')); //=sac initiation du local storage
+          console.log(productsInCart);
 
-        for (let i = 0; i < productsInCart.length; i++) {//je parcours le panier pour voir le contenu
-  
-          if (selectionProduct.id == productsInCart[i].id && selectColors.value == productsInCart[i].color){//si j'ajoute un produit avec le même id et couleur
+          const similarProduct = productsInCart.find(productInCart => productInCart.id == selectionProduct.id && productInCart.color == selectionProduct.color);
+          console.log(similarProduct);
+
+          if (similarProduct){//si j'ajoute un produit avec le même id et couleur
             //alors sa quantité  = sa quantité actuelle + quantité du produit sélectionné 
-            productsInCart[i].quantity += selectionProduct.quantity;
+            similarProduct.quantity += selectionProduct.quantity;
             localStorage.setItem('cart', JSON.stringify(productsInCart));//je mets à jour le local storage
             console.table(productsInCart);
           } else {
             productsInCart.push(selectionProduct);//si le panier n'est pas vide, j'ajoute le produit à la liste
-            localStorage.setItem('cart', JSON.stringify(productsInCart));//je mets à jour le local storage*/
-          }}
+            localStorage.setItem('cart', JSON.stringify(productsInCart));//je mets à jour le local storage
+          }
       //si le panier est vide 
         } else {
           products.push(selectionProduct);// j'ajoute le produit
           localStorage.setItem('cart', JSON.stringify(products));//je mets à jour le local storage
-          console.table(products); 
+          //console.table(products); 
         }
     });
   })

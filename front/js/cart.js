@@ -47,6 +47,7 @@ for (i = 0; i < productsInLocalStorage.length; i++) {//je parcours le tableau
 //suppression d'un produit
 let deleteItem = document.getElementsByClassName('deleteItem');
 
+
 function deleteProduct() {
   
   for (let i = 0; i < productsInCart.length; i++) {
@@ -58,12 +59,12 @@ function deleteProduct() {
       console.log(deleteId);
       console.log(deleteColor);
 
-      productsInCart = productsInCart.filter( elt => elt.id !== deleteId || elt.color !== deleteColor);//filtrer sur l'élément cliqué par le bouton suppr
+      productsInCart = productsInCart.find( elt => elt.id !== deleteId || elt.color !== deleteColor);//filtrer sur l'élément cliqué par le bouton suppr
 
      localStorage.setItem('cart', JSON.stringify(productsInCart));//je mets à jour le local storage//je mets à jour le local storate
     });
   }
-  document.location.reload();
+
 }
 deleteProduct();
 
