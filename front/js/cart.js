@@ -6,7 +6,7 @@ console.log(productsInCart);
 const cartItems = document.getElementById('cart__items');
 
 //Création boucle pour chaque ligne pour afficher les données //
-for (i = 0; i < productsInCart.length; i++) {
+for (let i = 0; i < productsInCart.length; i++) {
   let id = productsInCart[i].id;
   let UrlProduct = `http://localhost:3000/api/products/${id}`; 
   
@@ -18,15 +18,15 @@ fetch (UrlProduct)
     }
   })
     .then(function(product) {
-      debugger
       cartItems.innerHTML += `
-    <article class="cart__item" data-id="${productsInCart[i].id}">
+      <article class="cart__item" data-id="${productsInCart[i].id}">
                 <div class="cart__item__img">
-                  <img src="${product.image}" alt="${product.alt}">
+                  <img src="${product.imageUrl}" alt="${product.alt}">
                 </div>
                 <div class="cart__item__content">
                   <div class="cart__item__content__titlePrice">
                     <h2>${product.name}</h2>
+                    <h3>${productsInCart[i].color}<h3>
                     <p>${product.price} €</p>
                   </div>
                   <div class="cart__item__content__settings">
@@ -39,13 +39,12 @@ fetch (UrlProduct)
                     </div>
                   </div>
                 </div>
-              </article>`;
+              </article>
+              `;
             })
     .catch(function(err) {
       // Une erreur est survenue
     });
-  
-  
   
   
 }
