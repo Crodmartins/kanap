@@ -50,8 +50,7 @@ getProduct.then((product) => {
 
   let selectionProduct = {//récupération des infos du produit
     id: product._id,
-    image: product.imageUrl,
-    name: product.name,  
+
   };
 
     addToCart.addEventListener('click', (event) => { //produit existant, clic sur le bouton Ajouter au panier
@@ -85,6 +84,3 @@ getProduct.then((product) => {
     });
   })
 
-/*la quantité ne s'incrémente pas 
-la nouvelle couleur ajoutée écrase la couleur du produit précédent
-selection produit ne semble pas être lu ?*/
