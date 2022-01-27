@@ -1,17 +1,14 @@
-//récupération données local storage //
-let productsInCart = JSON.parse(localStorage.getItem('cart'));
+/*AFFICHAGE PANIER*/
+let productsInCart = JSON.parse(localStorage.getItem('cart'));//je récupère les données du local storage
 console.log(productsInCart);
 
-//modification du code html // 
-const cartItems = document.getElementById('cart__items');
+const cartItems = document.getElementById('cart__items');//je sélectionne le code html à modifier
 
-//Création boucle pour chaque ligne pour afficher les données //
-for (let i = 0; i < productsInCart.length; i++) {
+for (let i = 0; i < productsInCart.length; i++) {//je créé une boucle pour chaque produit
   let id = productsInCart[i].id;
-  let UrlProduct = `http://localhost:3000/api/products/${id}`; 
+  let UrlProduct = `http://localhost:3000/api/products/${id}`; //j'appelle l'API en fonction de l'ID du produit au panier
   
-  //j'appelle l'API pour récupérer la donnée prix
-fetch (UrlProduct)                                            
+fetch (UrlProduct) //j'appelle l'API pour récupérer les données                                          
    .then(function(res) {
     if (res.ok) {
     return res.json();
@@ -45,6 +42,40 @@ fetch (UrlProduct)
     .catch(function(err) {
       // Une erreur est survenue
     });
-  
-  
 }
+
+/*CALCUL DE LA QUANTITE*/
+
+let totalItems = 0;
+  
+for (let i = 0; i < productsInCart.length; i++) {//je calcule les quantités totales
+  totalItems += productsInCart[i].quantity;
+  }
+
+  let totalQuantity = document.getElementById('totalQuantity');
+  totalQuantity.innerHTML = totalItems;//j'affiche la quantité totale
+
+/*CALCUL DU PRIX TOTAL*/
+let totalAmount = 0;
+
+for (let i = 0; i < productsInCart.length; i++) {//je créé une boucle pour chaque produit
+  let id = productsInCart[i].id;
+  let UrlProduct = `http://localhost:3000/api/products/${id}`; //j'appelle l'API en fonction de l'ID du produit au panier
+  
+  let totalPrice = document.getElementById('totalPrice');
+  
+fetch (UrlProduct) //j'appelle l'API pour récupérer les données                                          
+   .then(function(res) {
+    if (res.ok) {
+    return res.json();
+    }
+  })
+    .then(function(product) {
+      totalAmount += (product.price * productsInCart[i].quantity);
+      totalPrice.innerHTML = totalAmount;
+    })
+    .catch(function(err) {
+      // Une erreur est survenue
+    });
+
+  }
